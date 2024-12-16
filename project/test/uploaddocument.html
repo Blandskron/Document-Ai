@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Documento</title>
+</head>
+<body>
+    <h1>Subir Documento</h1>
+    <form id="uploadForm" enctype="multipart/form-data" method="POST">
+        <label for="title">Título del Documento:</label><br>
+        <input type="text" id="title" name="title" placeholder="Título" required><br><br>
+
+        <label for="file">Seleccionar Archivo (PDF o Word):</label><br>
+        <input type="file" id="file" name="file" accept=".pdf,.docx" required><br><br>
+
+        <button type="submit">Subir Documento</button>
+    </form>
+
+    <p id="response"></p>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const title = document.getElementById("title").value;
+            const file = document.getElementById("file").files[0];
+
+            formData.append("title", title);
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/documents/upload/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById("response").innerText = `Documento subido con éxito. ID: ${data.id}`;
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById("response").innerText = `Error: ${JSON.stringify(errorData)}`;
+                }
+            } catch (error) {
+                document.getElementById("response").innerText = `Error al conectar con el servidor: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
