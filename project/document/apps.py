@@ -1,7 +1,5 @@
 from django.apps import AppConfig
-from .faiss_index import load_index
-
-
+from .ai_utils.faiss_index import initialize_faiss_index
 
 
 class DocumentConfig(AppConfig):
@@ -9,4 +7,9 @@ class DocumentConfig(AppConfig):
     name = 'document'
 
     def ready(self):
-        load_index()
+        """
+        Este método se ejecuta cuando la configuración de la app está lista.
+        Aquí inicializamos el índice FAISS.
+        """
+        print("Inicializando índice FAISS...")
+        initialize_faiss_index()

@@ -7,7 +7,7 @@ def summarize_text(text):
     return summarizer(text, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
 
 # Búsqueda en FAISS
-from .faiss_index import get_embedding, index
+from .faiss_index2 import get_embedding, index
 
 def search_documents(query, top_k=5):
     query_vector = get_embedding(query)
